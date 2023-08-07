@@ -1,0 +1,16 @@
+.footer {
+  height: 40px;
+  background-color: #222;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  a {
+    color: var(--primary-blue);
+    transition: color 0.3s ease;
+    
+    &:hover {
+      color: var(--secondary-blue);
+    }
+  }
+}

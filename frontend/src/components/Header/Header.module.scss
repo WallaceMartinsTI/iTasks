@@ -1,0 +1,30 @@
+header {
+  height: 60px;
+  border-bottom: 1px solid var(--primary-blue);
+  display: flex;
+  font-size: 1.5em;
+  justify-content: space-between;
+  box-shadow: 0 4px 6px -6px #222;
+  margin-bottom: 2em;
+
+  .home_link {
+    img {
+      height: 100%;
+    }
+
+  }
+
+  nav {
+    width: 40%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+
+    a {
+      color: var(--primary-blue);
+      padding: 0.5em;
+
+    }
+  }
+}
+
