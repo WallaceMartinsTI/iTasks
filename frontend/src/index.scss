@@ -16,6 +16,12 @@ a {
   text-decoration: none;
 }
 
+input[type="submit"],
+input[type="reset"],
 button {
   cursor: pointer;
+}
+
+.hidden {
+  display: none !important;
 }

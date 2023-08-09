@@ -5,13 +5,12 @@ header {
   font-size: 1.5em;
   justify-content: space-between;
   box-shadow: 0 4px 6px -6px #222;
-  margin-bottom: 2em;
+  margin-bottom: 1.5em;
 
   .home_link {
     img {
       height: 100%;
     }
-
   }
 
   nav {
@@ -24,6 +23,14 @@ header {
       color: var(--primary-blue);
       padding: 0.5em;
 
+    }
+
+    button {
+      color: var(--primary-blue);
+      font-size: 1em;
+      border: none;
+      background-color: transparent;
+      padding: 0.5em;
     }
   }
 }
