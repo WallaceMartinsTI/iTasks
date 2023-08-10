@@ -37,6 +37,7 @@ export interface AuthProps {
   user?: LoginUserProps;
   signed?: boolean;
   userTasks?: Tasks[];
+  addTask?: (data: string) => Response;
   signin?: ({ email, password }: LoginUserProps) => string | void;
   signup?: ({ username, email, password }: AllUserProps) => string;
   signout?: () => void;
@@ -46,7 +47,8 @@ export const AuthContextProvider = ({ children }: ProvideProps) => {
   const [user, setUser] = useState<LoginUserProps | null>(null);
   const [newUser, setNewUser] = useState<AllUserProps>({} as AllUserProps);
   const [usersStorage, setUsersStorage] = useState([]);
-  const [userTasks, setUserTasks] = useState([]);
+  const [userTasks, setUserTasks] = useState<Tasks[]>([]);
+  const [userDataLoaded, setUserDataLoaded] = useState(false);
 
   const signed = localStorage.getItem("signed") === null ? false : true;
   const userId = localStorage.getItem("user_id");
@@ -57,9 +59,12 @@ export const AuthContextProvider = ({ children }: ProvideProps) => {
       const response = await fetch(`${URL}/tasks/${id}`);
       const tasks = await response.json();
       setUserTasks(tasks);
+      setUserDataLoaded(true);
     };
 
-    getTasks(userId!);
+    if (user) {
+      getTasks(userId!);
+    }
   }, [user]);
 
   // Get Users from Database
@@ -106,6 +111,29 @@ export const AuthContextProvider = ({ children }: ProvideProps) => {
 
       return response;
     } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Add a new task to Database
+  const addTask = async (data: string) => {
+    try {
+      const response = await fetch(`${URL}/createtask/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: data,
+      });
+
+      const newTask = await response.json();
+
+      setUserTasks((prevTasks) => [...prevTasks, newTask]);
+      alert("Tarefa criada com sucesso!");
+
+      return response;
+    } catch (error) {
+      console.log("ENTROU CATCH DA ADD TASK");
       console.log(error);
     }
   };
@@ -161,11 +189,20 @@ export const AuthContextProvider = ({ children }: ProvideProps) => {
     setUser(null);
     localStorage.removeItem("user_token");
     localStorage.removeItem("signed");
+    setUserTasks([]);
   };
 
   return (
     <AuthContext.Provider
-      value={{ user, userTasks, signed, signin, signup, signout }}
+      value={{
+        user,
+        userTasks,
+        addTask,
+        signed,
+        signin,
+        signup,
+        signout,
+      }}
     >
       {children}
     </AuthContext.Provider>

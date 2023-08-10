@@ -4,8 +4,6 @@ import { AuthProps } from "../../context/UserContex";
 import useAuth from "../../hooks/useAuth";
 import { useNavigate, Link } from "react-router-dom";
 
-const URL = import.meta.env.VITE_BASE_URL;
-
 interface IFormProps {
   usernameField?: boolean;
   emailField?: boolean;
@@ -83,33 +81,18 @@ const Form = ({
   const [endDate, setEndDate] = useState<string>(dates.formattedDate);
   const [completed, setCompleted] = useState<boolean>(false);
 
-  const [tasksList, setTasksList] = useState<ITraskProps[]>([]);
+  //const [tasksList, setTasksList] = useState<ITraskProps[]>([]);
 
   const [error, setError] = useState<string>("");
 
   const navigate = useNavigate();
-  const { signup, signin }: AuthProps = useAuth();
+
+  const { signup, signin, addTask }: AuthProps = useAuth();
 
   const userId = localStorage.getItem("user_id");
 
   const generateTaskId = () => {
     return Math.floor(Math.random() * 10000) + 1;
-  };
-
-  const addTask = async (data: string) => {
-    try {
-      const response = await fetch(`${URL}/createtask/`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: data,
-      });
-
-      return response;
-    } catch (error) {
-      console.log(error);
-    }
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
@@ -146,7 +129,6 @@ const Form = ({
 
       navigate("/");
     } else if (formType === "ADDTRASK") {
-      // CONTINUAR DAQUI
       if (!title || !description || !startDate || !endDate) {
         setError("Preencha todos os campos");
         return;
@@ -163,8 +145,8 @@ const Form = ({
       };
 
       const data = JSON.stringify(newTask);
-      addTask(data);
-      alert("Tarefa criada com sucesso!");
+
+      addTask!(data);
       navigate("/");
     }
   };
