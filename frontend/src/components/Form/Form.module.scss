@@ -43,6 +43,10 @@
         width: 70%;
       }
 
+      input[type="checkbox"] {
+        cursor: pointer;
+      }
+
       textarea {
         outline: none;
         resize: none;
@@ -85,7 +89,7 @@
       width: 100%;
       justify-content: center;
   
-      input {
+      input, a {
         border: 1px solid var(--primary-blue);
         border-radius: 15px;
         background-color: transparent;

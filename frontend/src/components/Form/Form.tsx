@@ -2,7 +2,9 @@ import styles from "./Form.module.scss";
 import { useState, FormEvent } from "react";
 import { AuthProps } from "../../context/UserContex";
 import useAuth from "../../hooks/useAuth";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
+
+const URL = import.meta.env.VITE_BASE_URL;
 
 interface IFormProps {
   usernameField?: boolean;
@@ -14,10 +16,21 @@ interface IFormProps {
   startDateField?: boolean;
   endDateField?: boolean;
   completedField?: boolean;
+  clearBtn?: boolean;
   btnText: string;
   formType: "REGISTER" | "LOGIN" | "ADDTRASK";
   formTitle: string;
   formSubtitle: string;
+}
+
+interface ITraskProps {
+  id: number;
+  title: string;
+  description: string;
+  startDate: string;
+  endDate: string;
+  completed: boolean;
+  owner: string | null;
 }
 
 const Form = ({
@@ -30,6 +43,7 @@ const Form = ({
   startDateField,
   endDateField,
   completedField,
+  clearBtn = true,
   btnText,
   formType,
   formTitle,
@@ -56,7 +70,6 @@ const Form = ({
       formattedFutureDate: formattedFutureDate, // Data daqui a 5 anos formatada: "2028-08-31"
     };
   }
-
   const dates = getFormattedAndFutureDate();
 
   const [username, setUsername] = useState<string>("");
@@ -67,13 +80,37 @@ const Form = ({
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [startDate, setStartDate] = useState<string>(dates.formattedDate);
-  const [endDate, setEndDate] = useState<string>("");
+  const [endDate, setEndDate] = useState<string>(dates.formattedDate);
   const [completed, setCompleted] = useState<boolean>(false);
+
+  const [tasksList, setTasksList] = useState<ITraskProps[]>([]);
 
   const [error, setError] = useState<string>("");
 
   const navigate = useNavigate();
   const { signup, signin }: AuthProps = useAuth();
+
+  const userId = localStorage.getItem("user_id");
+
+  const generateTaskId = () => {
+    return Math.floor(Math.random() * 10000) + 1;
+  };
+
+  const addTask = async (data: string) => {
+    try {
+      const response = await fetch(`${URL}/createtask/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: data,
+      });
+
+      return response;
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -85,9 +122,6 @@ const Form = ({
         setError("As senhas não sãos iguais");
         return;
       }
-
-      console.log("form");
-      console.log({ username, email, password });
       const res = signup!({ username, email, password });
 
       if (res) {
@@ -110,6 +144,27 @@ const Form = ({
         return;
       }
 
+      navigate("/");
+    } else if (formType === "ADDTRASK") {
+      // CONTINUAR DAQUI
+      if (!title || !description || !startDate || !endDate) {
+        setError("Preencha todos os campos");
+        return;
+      }
+
+      const newTask: ITraskProps = {
+        id: generateTaskId(),
+        title,
+        description,
+        startDate,
+        endDate,
+        completed,
+        owner: userId,
+      };
+
+      const data = JSON.stringify(newTask);
+      addTask(data);
+      alert("Tarefa criada com sucesso!");
       navigate("/");
     }
   };
@@ -187,7 +242,7 @@ const Form = ({
               type="text"
               name="title"
               placeholder="Ex.: Colocar lixo na rua"
-              maxLength={100}
+              maxLength={60}
               required
               onChange={(e) => [setTitle(e.target.value), setError("")]}
               value={title}
@@ -240,15 +295,27 @@ const Form = ({
 
         {completedField && (
           <div>
-            <label htmlFor="endDate">Data Final:</label>
-            <input type="checkbox" name="endDate" />
+            <label htmlFor="completed">Completada:</label>
+            <input
+              type="checkbox"
+              name="completed"
+              onChange={() => [
+                setCompleted((prevState) => !prevState),
+                setError(""),
+              ]}
+              checked={completed}
+            />
           </div>
         )}
 
         {error && <p className={styles.error}>{error}</p>}
 
         <div className={styles.button_container}>
-          <input type="reset" value="Limpar" />
+          {clearBtn ? (
+            <input type="reset" value="Limpar" />
+          ) : (
+            <Link to="/register">Registrar</Link>
+          )}
           <input type="submit" value={btnText} />
         </div>
       </form>

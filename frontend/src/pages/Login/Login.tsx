@@ -6,6 +6,7 @@ const Login = () => {
       <Form
         emailField={true}
         passwordField={true}
+        clearBtn={false}
         btnText="Entrar"
         formType="LOGIN"
         formTitle="Entrar"

@@ -2,7 +2,7 @@ import { createContext, ReactNode } from "react";
 import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 
-const URL = "http://localhost:8000";
+const URL = import.meta.env.VITE_BASE_URL;
 
 export const AuthContext = createContext({});
 
@@ -17,7 +17,7 @@ interface AllUserProps {
 }
 
 interface LoginUserProps {
-  id?: number;
+  id?: string;
   username?: string;
   email: string;
   password: string;
@@ -49,17 +49,17 @@ export const AuthContextProvider = ({ children }: ProvideProps) => {
   const [userTasks, setUserTasks] = useState([]);
 
   const signed = localStorage.getItem("signed") === null ? false : true;
+  const userId = localStorage.getItem("user_id");
 
   // Get Tasks for Database
   useEffect(() => {
-    const getTasks = async (id: number | undefined) => {
+    const getTasks = async (id: string | undefined) => {
       const response = await fetch(`${URL}/tasks/${id}`);
       const tasks = await response.json();
       setUserTasks(tasks);
     };
 
-    //getTasks(user?.id);
-    getTasks(1); // MUDAR DPS
+    getTasks(userId!);
   }, [user]);
 
   // Get Users from Database
@@ -117,10 +117,12 @@ export const AuthContextProvider = ({ children }: ProvideProps) => {
 
     if (hasUser?.length) {
       if (hasUser[0].email === email && hasUser[0].password === password) {
+        const userId = hasUser[0].id;
         const token = uuidv4();
         localStorage.setItem("user_token", JSON.stringify({ email, token }));
         localStorage.setItem("signed", "true");
-        setUser({ email, password });
+        localStorage.setItem("user_id", userId!);
+        setUser({ id: userId, email, password });
         return;
       } else {
         return "E-mail ou senha incorretos.";

@@ -5,6 +5,10 @@
   justify-content: center;
   align-items: center;
 
+  position: fixed;
+  width: 100%;
+  bottom: 0;
+
   a {
     color: var(--primary-blue);
     transition: color 0.3s ease;
