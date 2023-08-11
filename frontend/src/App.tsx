@@ -9,6 +9,7 @@ import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
 import { AuthContextProvider, AuthProps } from "./context/UserContex";
 import useAuth from "./hooks/useAuth";
+import About from "./pages/About/About";
 
 interface PrivateProps {
   Item: FC;
@@ -38,6 +39,7 @@ function App() {
             <main className={styles.container}>
               <Routes>
                 <Route path="/" element={<Home />} />
+
                 <Route
                   path="/createtask/"
                   element={<Private Item={CreateTask} />}
@@ -45,6 +47,8 @@ function App() {
                 <Route path="/login" element={<Private Item={Login} />} />
 
                 <Route path="/register" element={<Private Item={Register} />} />
+
+                <Route path="/about" element={<Private Item={About} />} />
               </Routes>
             </main>
             <Footer />

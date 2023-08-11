@@ -1,0 +1,121 @@
+.about {
+  border: 3px solid var(--primary-blue);
+  border-radius: 15px;
+  width: 50%;
+  padding: 2em;
+  margin-top: 2em;
+  font-size: 1.1em;
+
+  section {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    gap: 2em;
+  }
+
+  .techs {
+    display: flex;
+    justify-content: space-between;
+    width: 20em;
+
+    ul {
+      list-style: none;
+    }
+    
+    .front_container {
+      color: rgb(11, 125, 139);
+    }
+
+    .back_container {
+      color: rgb(26, 155, 58);
+    }
+
+    .db_container {
+      color: rgb(216, 168, 38);
+    }
+  }
+
+  .list_header {
+    position: relative;
+    display: inline-block;
+    font-weight: bold;
+    font-size: 1.1em;
+    margin-bottom: 10px;
+  }
+
+  .list_header::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    height: 2px;
+    width: 120%;
+    background-color: var(--primary-blue);
+  }
+
+  h1, h2 {
+    color: #8f8f8f;
+    margin-bottom: 10px;
+    text-decoration: underline;
+  }
+
+  p {
+    margin-bottom: 20px;
+    text-align: justify;
+
+    span {
+      color: var(--secondary-blue);
+    }
+  }
+  
+  .dev_infos {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    
+    p {
+      text-align: center;
+      margin-bottom: 0;
+      color: rgb(189, 2, 2);
+      text-decoration: underline;
+    }
+
+    div {
+      display: flex;
+      flex-direction: column;
+      border: 2px dashed var(--primary-blue);
+      padding: 0.5em 0;
+      margin-top: 1em;
+      border-radius: 15px;
+
+      span {
+        color: var(--secondary-blue);
+      }
+
+      a {
+        color: #222;
+        text-decoration: none;
+        position: relative;
+        margin-top: 5px;
+      }
+
+      a:hover {
+        color: var(--secondary-blue);
+      }
+
+      a::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        text-align: center;
+        height: 2px;
+        width: 45%;
+        background-color: var(--primary-blue);
+      }
+    }
+  }
+}
