@@ -5,7 +5,7 @@ import useAuth from "../../hooks/useAuth";
 import { AuthProps } from "../../context/UserContex";
 
 const Home = () => {
-  const { signed, userDataLoaded }: AuthProps = useAuth();
+  const { signed }: AuthProps = useAuth();
 
   return (
     <div className={styles.home}>

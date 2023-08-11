@@ -20,6 +20,7 @@ interface SignedProps {
 
 const Private = ({ Item }: PrivateProps) => {
   const { signed }: SignedProps = useAuth();
+
   if (Item.name == "CreateTask") {
     return signed ? <Item /> : <Login />;
   } else {

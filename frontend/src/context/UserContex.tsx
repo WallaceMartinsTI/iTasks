@@ -50,7 +50,10 @@ export const AuthContextProvider = ({ children }: ProvideProps) => {
   const [userTasks, setUserTasks] = useState<Tasks[]>([]);
 
   const signed = localStorage.getItem("signed") === null ? false : true;
-  const userId = localStorage.getItem("user_id");
+  const userId =
+    localStorage.getItem("user_id") === null
+      ? "0"
+      : localStorage.getItem("user_id");
 
   // Get Tasks for Database
   useEffect(() => {
@@ -129,7 +132,6 @@ export const AuthContextProvider = ({ children }: ProvideProps) => {
 
       return response;
     } catch (error) {
-      console.log("ENTROU CATCH DA ADD TASK");
       console.log(error);
     }
   };
@@ -185,7 +187,8 @@ export const AuthContextProvider = ({ children }: ProvideProps) => {
     setUser(null);
     localStorage.removeItem("user_token");
     localStorage.removeItem("signed");
-    //setUserTasks([]);
+    localStorage.removeItem("user_id");
+    setUserTasks([]);
   };
 
   return (
