@@ -5,7 +5,7 @@ import useAuth from "../../hooks/useAuth";
 import { AuthProps } from "../../context/UserContex";
 
 const Home = () => {
-  const { signed }: AuthProps = useAuth();
+  const { signed, isLoading }: AuthProps = useAuth();
 
   return (
     <div className={styles.home}>
@@ -15,7 +15,16 @@ const Home = () => {
           <Link to="/login">Login</Link> para começar a salvar suas tarefas!
         </p>
       ) : (
-        <TasksList />
+        <>
+          {isLoading ? (
+            <div className={styles.loading_container}>
+              <div className={styles.loading}></div>
+              <p className={styles.wait_text}>Carregando, aguarde...</p>
+            </div>
+          ) : (
+            <TasksList />
+          )}
+        </>
       )}
     </div>
   );

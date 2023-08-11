@@ -36,6 +36,7 @@ export interface Tasks {
 export interface AuthProps {
   user?: LoginUserProps;
   signed?: boolean;
+  isLoading?: boolean;
   userTasks?: Tasks[];
   addTask?: (data: string) => Response;
   signin?: ({ email, password }: LoginUserProps) => string | void;
@@ -49,6 +50,8 @@ export const AuthContextProvider = ({ children }: ProvideProps) => {
   const [usersStorage, setUsersStorage] = useState([]);
   const [userTasks, setUserTasks] = useState<Tasks[]>([]);
 
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+
   const signed = localStorage.getItem("signed") === null ? false : true;
   const userId =
     localStorage.getItem("user_id") === null
@@ -57,14 +60,30 @@ export const AuthContextProvider = ({ children }: ProvideProps) => {
 
   // Get Tasks for Database
   useEffect(() => {
-    const getTasks = async (id: string | undefined) => {
-      const response = await fetch(`${URL}/tasks/${id}`);
-      const tasks = await response.json();
-      setUserTasks(tasks);
-    };
+    async function delayedFunction() {
+      //console.log("Esperando por 2 segundos...");
+      setIsLoading(true);
 
-    getTasks(userId!);
+      // Wait 2 seconds to show loading before fetch
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+
+      const getTasks = async (id: string | undefined) => {
+        const response = await fetch(`${URL}/tasks/${id}`);
+        const tasks = await response.json();
+        setUserTasks(tasks);
+      };
+
+      getTasks(userId!);
+      //setIsLoading(false);
+      //console.log("A função foi executada após 2 segundos");
+    }
+
+    delayedFunction();
   }, [user]);
+
+  useEffect(() => {
+    setIsLoading(false);
+  }, [userTasks]);
 
   // Get Users from Database
   useEffect(() => {
@@ -188,6 +207,9 @@ export const AuthContextProvider = ({ children }: ProvideProps) => {
     localStorage.removeItem("user_token");
     localStorage.removeItem("signed");
     localStorage.removeItem("user_id");
+
+    localStorage.removeItem("user_tasks");
+
     setUserTasks([]);
   };
 
@@ -201,6 +223,7 @@ export const AuthContextProvider = ({ children }: ProvideProps) => {
         signin,
         signup,
         signout,
+        isLoading,
       }}
     >
       {children}
