@@ -48,7 +48,6 @@ export const AuthContextProvider = ({ children }: ProvideProps) => {
   const [newUser, setNewUser] = useState<AllUserProps>({} as AllUserProps);
   const [usersStorage, setUsersStorage] = useState([]);
   const [userTasks, setUserTasks] = useState<Tasks[]>([]);
-  const [userDataLoaded, setUserDataLoaded] = useState(false);
 
   const signed = localStorage.getItem("signed") === null ? false : true;
   const userId = localStorage.getItem("user_id");
@@ -59,12 +58,9 @@ export const AuthContextProvider = ({ children }: ProvideProps) => {
       const response = await fetch(`${URL}/tasks/${id}`);
       const tasks = await response.json();
       setUserTasks(tasks);
-      setUserDataLoaded(true);
     };
 
-    if (user) {
-      getTasks(userId!);
-    }
+    getTasks(userId!);
   }, [user]);
 
   // Get Users from Database
@@ -189,7 +185,7 @@ export const AuthContextProvider = ({ children }: ProvideProps) => {
     setUser(null);
     localStorage.removeItem("user_token");
     localStorage.removeItem("signed");
-    setUserTasks([]);
+    //setUserTasks([]);
   };
 
   return (
