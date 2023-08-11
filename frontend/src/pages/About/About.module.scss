@@ -16,7 +16,12 @@
   .techs {
     display: flex;
     justify-content: space-between;
-    width: 20em;
+    width: 100%;
+    gap: 1em;
+
+    div {
+      width: 33%;
+    }
 
     ul {
       list-style: none;

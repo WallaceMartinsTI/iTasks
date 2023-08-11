@@ -22,7 +22,23 @@ header {
     a {
       color: var(--primary-blue);
       padding: 0.5em;
+      position: relative;
+    }
 
+    a::before, button::before {
+      content: "";
+      position: absolute;
+      bottom: 10px;
+      left: 0;
+      width: 0;
+      height: 2px;
+      background-color: var(--primary-blue);
+      transition: width 0.3s ease-in-out;
+    }
+
+    a:hover::before,
+    button:hover::before {
+      width: 100%;
     }
 
     button {
@@ -31,6 +47,7 @@ header {
       border: none;
       background-color: transparent;
       padding: 0.5em;
+      position: relative;
     }
   }
 }
