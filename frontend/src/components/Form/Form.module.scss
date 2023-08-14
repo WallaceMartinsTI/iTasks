@@ -91,7 +91,7 @@
       width: 100%;
       justify-content: center;
   
-      input, a {
+      input, a, button {
         border: 1px solid var(--primary-blue);
         border-radius: 15px;
         background-color: transparent;
@@ -100,6 +100,17 @@
         width: 10em;
         font-size: 14px;
       }
+
+      .cancel_clear:hover {
+        border-color: gold;
+        color: gold;
+      }
+
+      .add_update:hover {
+        border-color: #83E509;
+        color: #83E509;
+      }
     }
   }
 }
+

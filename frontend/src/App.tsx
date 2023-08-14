@@ -21,7 +21,6 @@ interface SignedProps {
 
 const Private = ({ Item }: PrivateProps) => {
   const { signed }: SignedProps = useAuth();
-
   if (Item.name == "CreateTask") {
     return signed ? <Item /> : <Login />;
   } else {
@@ -35,23 +34,28 @@ function App() {
       <AuthContextProvider>
         <div className={styles.App}>
           <BrowserRouter>
-            <Header />
-            <main className={styles.container}>
-              <Routes>
-                <Route path="/" element={<Home />} />
+            <div className={styles.content}>
+              <Header />
+              <main className={styles.container}>
+                <Routes>
+                  <Route path="/" element={<Home />} />
 
-                <Route
-                  path="/createtask/"
-                  element={<Private Item={CreateTask} />}
-                />
-                <Route path="/login" element={<Private Item={Login} />} />
+                  <Route
+                    path="/createtask/"
+                    element={<Private Item={CreateTask} />}
+                  />
+                  <Route path="/login" element={<Private Item={Login} />} />
 
-                <Route path="/register" element={<Private Item={Register} />} />
+                  <Route
+                    path="/register"
+                    element={<Private Item={Register} />}
+                  />
 
-                <Route path="/about" element={<Private Item={About} />} />
-              </Routes>
-            </main>
-            <Footer />
+                  <Route path="/about" element={<Private Item={About} />} />
+                </Routes>
+              </main>
+              <Footer />
+            </div>
           </BrowserRouter>
         </div>
       </AuthContextProvider>

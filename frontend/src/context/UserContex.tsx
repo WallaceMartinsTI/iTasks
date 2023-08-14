@@ -24,7 +24,7 @@ interface LoginUserProps {
 }
 
 export interface Tasks {
-  id: number;
+  id: string;
   title: string;
   description: string;
   startDate: string;
@@ -38,7 +38,15 @@ export interface AuthProps {
   signed?: boolean;
   isLoading?: boolean;
   userTasks?: Tasks[];
+
+  isModalOpen?: boolean;
+  setIsModalOpen?: (data: boolean) => void;
+  editTaskId?: string;
+  setEditTaskId?: (data: string) => void;
+
   addTask?: (data: string) => Response;
+  updateTask?: (taskId: string, data: string) => Response;
+  deleteTask?: (taskId: string) => Response;
   signin?: ({ email, password }: LoginUserProps) => string | void;
   signup?: ({ username, email, password }: AllUserProps) => string;
   signout?: () => void;
@@ -51,6 +59,9 @@ export const AuthContextProvider = ({ children }: ProvideProps) => {
   const [userTasks, setUserTasks] = useState<Tasks[]>([]);
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editTaskId, setEditTaskId] = useState("");
 
   const signed = localStorage.getItem("signed") === null ? false : true;
   const userId =
@@ -155,6 +166,52 @@ export const AuthContextProvider = ({ children }: ProvideProps) => {
     }
   };
 
+  // Update a Task
+  const updateTask = async (taskId: string, data: string) => {
+    try {
+      const response = await fetch(`${URL}/tasks/${taskId}/update/`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: data,
+      });
+
+      const updatedTask = await response.json();
+
+      setUserTasks((prevTasks) =>
+        prevTasks.map((task) => (task.id === taskId ? updatedTask : task))
+      );
+
+      setEditTaskId("");
+      alert("Tarefa atualizada com sucesso!");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  // Delete a task
+  const deleteTask = async (taskId: string) => {
+    try {
+      const response = await fetch(`${URL}/tasks/${taskId}/delete/`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        setUserTasks((prevTasks) =>
+          prevTasks.filter((task) => task.id !== taskId)
+        );
+        setEditTaskId("");
+        alert("Tarefa excluída com sucesso!");
+      } else {
+        alert("Erro ao excluir a tarefa.");
+      }
+    } catch (error) {}
+  };
+
   const signin = ({ email, password }: LoginUserProps) => {
     const hasUser: LoginUserProps[] = usersStorage?.filter(
       (user: LoginUserProps) => user.email === email
@@ -219,11 +276,17 @@ export const AuthContextProvider = ({ children }: ProvideProps) => {
         user,
         userTasks,
         addTask,
+        updateTask,
+        deleteTask,
         signed,
         signin,
         signup,
         signout,
         isLoading,
+        isModalOpen,
+        setIsModalOpen,
+        editTaskId,
+        setEditTaskId,
       }}
     >
       {children}

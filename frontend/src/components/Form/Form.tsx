@@ -1,6 +1,6 @@
 import styles from "./Form.module.scss";
-import { useState, FormEvent } from "react";
-import { AuthProps } from "../../context/UserContex";
+import { useState, FormEvent, useEffect } from "react";
+import { AuthProps, Tasks } from "../../context/UserContex";
 import useAuth from "../../hooks/useAuth";
 import { useNavigate, Link } from "react-router-dom";
 
@@ -16,9 +16,11 @@ interface IFormProps {
   completedField?: boolean;
   clearBtn?: boolean;
   btnText: string;
-  formType: "REGISTER" | "LOGIN" | "ADDTRASK";
+  formType: "REGISTER" | "LOGIN" | "ADDTRASK" | "UPDATETASK";
   formTitle: string;
   formSubtitle: string;
+  editedTask?: Tasks[];
+  hideModal?: () => void;
 }
 
 interface ITraskProps {
@@ -46,6 +48,8 @@ const Form = ({
   formType,
   formTitle,
   formSubtitle,
+  editedTask,
+  hideModal,
 }: IFormProps) => {
   function getFormattedAndFutureDate() {
     const today = new Date();
@@ -81,13 +85,14 @@ const Form = ({
   const [endDate, setEndDate] = useState<string>(dates.formattedDate);
   const [completed, setCompleted] = useState<boolean>(false);
 
-  //const [tasksList, setTasksList] = useState<ITraskProps[]>([]);
+  const [cancelSubmit, setCancelSubmit] = useState(false);
 
   const [error, setError] = useState<string>("");
 
   const navigate = useNavigate();
 
-  const { signup, signin, addTask }: AuthProps = useAuth();
+  const { signup, signin, addTask, updateTask, editTaskId }: AuthProps =
+    useAuth();
 
   const userId = localStorage.getItem("user_id");
 
@@ -95,8 +100,24 @@ const Form = ({
     return Math.floor(Math.random() * 10000) + 1;
   };
 
+  useEffect(() => {
+    if (editedTask && editedTask!.length > 0) {
+      setTitle(editedTask[0].title);
+      setDescription(editedTask[0].description);
+      setStartDate(editedTask[0].startDate);
+      setEndDate(editedTask[0].endDate);
+      setCompleted(editedTask[0].completed);
+    }
+  }, [editedTask]);
+
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (cancelSubmit) {
+      hideModal!();
+      return;
+    }
+
     if (formType === "REGISTER") {
       if (!username || !email || !password || !confirmPassword) {
         setError("Preencha todos os campos");
@@ -148,6 +169,25 @@ const Form = ({
 
       addTask!(data);
       navigate("/");
+    } else if (formType === "UPDATETASK") {
+      if (!title || !description || !startDate || !endDate) {
+        setError("Preencha todos os campos");
+        return;
+      }
+
+      const updatedTask = {
+        title,
+        description,
+        startDate,
+        endDate,
+        completed,
+      };
+
+      console.log();
+      const data = JSON.stringify(updatedTask);
+
+      updateTask!(editTaskId!, data);
+      hideModal!();
     }
   };
 
@@ -181,8 +221,6 @@ const Form = ({
               onChange={(e) => [setEmail(e.target.value), setError("")]}
               value={email}
             />
-            {/* implementar erro personalizado no campo */}
-            <p className={(styles.error, "hidden")}>Erro</p>
           </div>
         )}
 
@@ -254,7 +292,6 @@ const Form = ({
             <input
               type="date"
               name="startDate"
-              min={dates.formattedDate}
               onChange={(e) => [setStartDate(e.target.value), setError("")]}
               value={startDate}
             />
@@ -267,8 +304,6 @@ const Form = ({
             <input
               type="date"
               name="endDate"
-              min={dates.formattedDate}
-              max={dates.formattedFutureDate}
               onChange={(e) => [setEndDate(e.target.value), setError("")]}
               value={endDate}
             />
@@ -294,11 +329,26 @@ const Form = ({
 
         <div className={styles.button_container}>
           {clearBtn ? (
-            <input type="reset" value="Limpar" />
+            <input
+              className={styles.cancel_clear}
+              type="reset"
+              value="Limpar"
+            />
           ) : (
-            <Link to="/register">Registrar</Link>
+            <>
+              {editTaskId ? (
+                <button
+                  className={styles.cancel_clear}
+                  onClick={() => setCancelSubmit(true)}
+                >
+                  Cancelar
+                </button>
+              ) : (
+                <Link to="/register">Registrar</Link>
+              )}
+            </>
           )}
-          <input type="submit" value={btnText} />
+          <input className={styles.add_update} type="submit" value={btnText} />
         </div>
       </form>
     </div>
