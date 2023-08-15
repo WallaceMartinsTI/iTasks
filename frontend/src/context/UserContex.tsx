@@ -4,7 +4,7 @@ import { useState, useEffect, createContext, ReactNode } from "react";
 // MODULES
 import { v4 as uuidv4 } from "uuid";
 
-const URL = import.meta.env.VITE_BASE_URL;
+const URL = "http://localhost:8000"; //import.meta.env.VITE_BASE_URL;
 
 export const AuthContext = createContext({});
 
