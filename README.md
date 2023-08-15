@@ -19,7 +19,7 @@
 
 iTasks é uma aplicação desenvolvida em **ReactJS** com **Vite**, focada no gerenciamento de tarefas, após criar seu usuário, você poderá criar/editar/deletar suas tarefas.
 
-Para acessar o app [clique aqui](link)
+Para acessar o app [clique aqui](link).
 
 Backend desenvolvido em **Django Rest Framework** (acesse o repositório [clicando aqui](https://github.com/WallaceMartinsTI/iTasks_Backend)) e o Banco de Dados utilizado foi **Postgresql** rodando locamente na minha máquina.
 
@@ -33,18 +33,14 @@ Backend desenvolvido em **Django Rest Framework** (acesse o repositório [clican
 
 <p>Após baixar o projeto, navege até seu diretório e utilize o comando:</p>
 
-<code>
-  npm install
-</code>
+<code>npm install</code>
 
 <p>
 para instalar as dependencias necessárias e depois,
 para rodar em modo desenvolvimento, utilize:
 </p>
 
-<code>
-  npm run dev
-</code>
+<code>npm run dev</code>
 
 ## ✔️ Tecnologias utilizada
 
