@@ -143,7 +143,7 @@ const Form = ({
       }
 
       alert("Usuário cadastrado com sucesso!");
-      navigate("/");
+      navigate("/login");
     } else if (formType === "LOGIN") {
       if (!email || !password) {
         setError("Preencha todos os campos");
