@@ -1,8 +1,17 @@
+// REACT ROUTER
 import { NavLink, Link } from "react-router-dom";
-import styles from "./Header.module.scss";
-import Logo from "../../assets/logo.png";
-import useAuth from "../../hooks/useAuth";
+
+// CONTEXTS
 import { AuthProps } from "../../context/UserContex";
+
+// HOOKS
+import useAuth from "../../hooks/useAuth";
+
+// ASSETS
+import Logo from "../../assets/logo.png";
+
+// CSS
+import styles from "./Header.module.scss";
 
 const Header = () => {
   const { signed, signout }: AuthProps = useAuth();

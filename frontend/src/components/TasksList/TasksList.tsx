@@ -1,9 +1,20 @@
+// REACT
 import { useState, useEffect, useRef } from "react";
-import styles from "./TasksList.module.scss";
+
+// REACT ROUTER
 import { Link } from "react-router-dom";
-import useAuth from "../../hooks/useAuth";
+
+// CONTEXTS
 import { Tasks, AuthProps } from "../../context/UserContex";
+
+// HOOKS
+import useAuth from "../../hooks/useAuth";
+
+// COMPONENTS
 import Form from "../Form/Form";
+
+// CSS
+import styles from "./TasksList.module.scss";
 
 const TasksList = () => {
   const hasStorage = localStorage.getItem("user_tasks") ? true : false;

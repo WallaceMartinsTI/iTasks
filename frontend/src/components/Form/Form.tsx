@@ -1,8 +1,17 @@
-import styles from "./Form.module.scss";
+// REACT
 import { useState, FormEvent, useEffect } from "react";
-import { AuthProps, Tasks } from "../../context/UserContex";
-import useAuth from "../../hooks/useAuth";
+
+// REACT ROUTER
 import { useNavigate, Link } from "react-router-dom";
+
+// CONTEXTS
+import { AuthProps, Tasks } from "../../context/UserContex";
+
+// HOOKS
+import useAuth from "../../hooks/useAuth";
+
+// CSS
+import styles from "./Form.module.scss";
 
 interface IFormProps {
   usernameField?: boolean;

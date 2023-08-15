@@ -1,8 +1,17 @@
+// REACT ROUTER
 import { Link } from "react-router-dom";
-import TasksList from "../../components/TasksList/TasksList";
-import styles from "./Home.module.scss";
-import useAuth from "../../hooks/useAuth";
+
+// CONTEXT
 import { AuthProps } from "../../context/UserContex";
+
+// HOOKS
+import useAuth from "../../hooks/useAuth";
+
+// COMPONENTS
+import TasksList from "../../components/TasksList/TasksList";
+
+// CSS
+import styles from "./Home.module.scss";
 
 const Home = () => {
   const { signed, isLoading }: AuthProps = useAuth();

@@ -1,5 +1,7 @@
-import { createContext, ReactNode } from "react";
-import { useState, useEffect } from "react";
+// REACT
+import { useState, useEffect, createContext, ReactNode } from "react";
+
+// MODULES
 import { v4 as uuidv4 } from "uuid";
 
 const URL = import.meta.env.VITE_BASE_URL;

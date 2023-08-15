@@ -1,15 +1,28 @@
+// REACT
 import { FC } from "react";
+
+// REACT ROUTER
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Register from "./pages/Register/Register";
-import Header from "./components/Header/Header";
-import Footer from "./components/Footer/Footer";
-import CreateTask from "./pages/CreateTask/CreateTask";
-import styles from "./App.module.scss";
+
+// CONTEXT
+import { AuthContextProvider } from "./context/UserContex";
+
+// HOOKS
+import useAuth from "./hooks/useAuth";
+
+// PAGES
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
-import { AuthContextProvider, AuthProps } from "./context/UserContex";
-import useAuth from "./hooks/useAuth";
+import Register from "./pages/Register/Register";
+import CreateTask from "./pages/CreateTask/CreateTask";
 import About from "./pages/About/About";
+
+// COMPONENTS
+import Header from "./components/Header/Header";
+import Footer from "./components/Footer/Footer";
+
+// CSS
+import styles from "./App.module.scss";
 
 interface PrivateProps {
   Item: FC;
